@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { lazy, Suspense, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion } from "motion/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -10,8 +10,7 @@ import {
   Smartphone, Terminal, X, Zap,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-
-const HeroScene = lazy(() => import("@/components/hero-scene").then((module) => ({ default: module.HeroScene })));
+import { HeroScene } from "@/components/hero-scene";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -106,7 +105,7 @@ function Index() {
     <main>
       <section id="top" className="grid-field relative flex min-h-screen items-center overflow-hidden pt-20">
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background" />
-        <div className="absolute inset-y-0 right-0 w-full opacity-80 lg:w-[62%]"><Suspense fallback={<div className="grid h-full place-items-center"><div className="h-16 w-16 animate-spin rounded-full border border-primary border-t-transparent" /></div>}><HeroScene /></Suspense></div>
+        <div className="absolute inset-y-0 right-0 w-full opacity-80 lg:w-[62%]"><HeroScene /></div>
         <div className="relative z-10 mx-auto w-full max-w-7xl px-5 lg:px-8">
           <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .8 }} className="max-w-3xl lg:max-w-[650px]">
             <div className="mb-7 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.2em] text-primary"><CircleDot className="h-3 w-3 animate-pulse" /> Runtime online · v1.0</div>
