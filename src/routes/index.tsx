@@ -34,6 +34,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { HeroScene } from "@/components/hero-scene";
+import { useGithubRelease } from "@/hooks/use-github-release";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -246,6 +247,13 @@ function Index() {
   const root = useRef<HTMLDivElement>(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const [screen, setScreen] = useState(0);
+  const { data: release } = useGithubRelease();
+
+  const repoUrl = "https://github.com/nhut0902-pr/SEVER-MINI-APP-BOT";
+  const apkAsset = release?.assets.find((asset) => asset.name.endsWith(".apk"));
+  const downloadUrl = apkAsset?.browser_download_url || `${repoUrl}/releases/latest`;
+  const version = release?.tag_name || "v1.0";
+  const fileSize = apkAsset ? `${(apkAsset.size / (1024 * 1024)).toFixed(1)} MB` : "14 MB";
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
     const ctx = gsap.context(() => {
@@ -277,8 +285,12 @@ function Index() {
           aria-label="Main navigation"
         >
           <a href="#top" className="flex min-w-0 items-center gap-2.5">
-            <span className="grid h-8 w-8 shrink-0 place-items-center rounded-lg border border-primary/30 bg-primary/10 text-primary">
-              <Server className="h-4 w-4" />
+            <span className="grid h-8 w-8 shrink-0 place-items-center overflow-hidden rounded-lg border border-primary/30 bg-primary/10">
+              <img
+                src="/logo-web.png"
+                alt="Android Server Mini Logo"
+                className="h-full w-full object-cover"
+              />
             </span>
             <span className="truncate font-mono text-sm font-semibold tracking-tight">
               ANDROID SERVER <i className="not-italic text-primary">MINI</i>
@@ -332,8 +344,13 @@ function Index() {
           className="grid-field relative flex min-h-screen items-center overflow-hidden pt-20"
         >
           <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background" />
-          <div className="absolute inset-y-0 right-0 w-full opacity-80 lg:w-[62%]">
-            <HeroScene />
+          <div className="absolute inset-y-0 right-0 z-0 flex w-full items-center justify-center opacity-80 lg:w-[62%]">
+            <div className="relative h-full w-full">
+              <HeroScene />
+              <div className="pointer-events-none absolute left-1/2 top-1/2 h-[60%] w-[60%] -translate-x-1/2 -translate-y-1/2 opacity-20 blur-sm grayscale brightness-200 contrast-150">
+                <img src="/logo-web.png" alt="" className="h-full w-full object-contain" />
+              </div>
+            </div>
           </div>
           <div className="relative z-10 mx-auto w-full max-w-7xl px-5 lg:px-8">
             <motion.div
@@ -343,7 +360,7 @@ function Index() {
               className="max-w-3xl lg:max-w-[650px]"
             >
               <div className="mb-7 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.2em] text-primary">
-                <CircleDot className="h-3 w-3 animate-pulse" /> Runtime online · v1.0
+                <CircleDot className="h-3 w-3 animate-pulse" /> Runtime online · {version}
               </div>
               <h1 className="text-glow text-5xl font-semibold leading-[0.97] tracking-[-0.06em] sm:text-7xl lg:text-[5.5rem]">
                 Turn Your Android Into A <span className="text-primary">Mini Server</span>
@@ -354,14 +371,14 @@ function Index() {
               </p>
               <div className="mt-9 flex flex-col gap-3 sm:flex-row">
                 <Button asChild variant="launch" size="lg">
-                  <a href="#download">
+                  <a href={downloadUrl} target="_blank" rel="noopener noreferrer">
                     <ArrowDownToLine /> Download APK{" "}
-                    <span className="font-mono text-[10px] opacity-60">v1.0</span>
+                    <span className="font-mono text-[10px] opacity-60">{version}</span>
                   </a>
                 </Button>
                 <Button asChild variant="glass" size="lg">
-                  <a href="#architecture">
-                    <Code2 /> View Documentation
+                  <a href={repoUrl} target="_blank" rel="noopener noreferrer">
+                    <Github className="h-4 w-4" /> View Repository
                   </a>
                 </Button>
               </div>
@@ -373,7 +390,7 @@ function Index() {
                   <Smartphone className="h-3.5 w-3.5 text-primary" /> Android 8+
                 </span>
                 <span className="flex items-center gap-2">
-                  <Zap className="h-3.5 w-3.5 text-primary" /> 14 MB
+                  <Zap className="h-3.5 w-3.5 text-primary" /> {fileSize}
                 </span>
               </div>
             </motion.div>
@@ -690,41 +707,66 @@ function Index() {
               Put idle hardware to work. Launch your first Python service in less than two minutes.
             </p>
             <div className="mt-9 flex flex-col justify-center gap-3 sm:flex-row">
-              <Button variant="launch" size="lg">
-                <ArrowDownToLine /> Download APK
+              <Button asChild variant="launch" size="lg">
+                <a href={downloadUrl} target="_blank" rel="noopener noreferrer">
+                  <ArrowDownToLine /> Download APK
+                </a>
               </Button>
-              <Button variant="glass" size="lg">
-                <Github /> GitHub Repository
+              <Button asChild variant="glass" size="lg">
+                <a href={repoUrl} target="_blank" rel="noopener noreferrer">
+                  <Github /> GitHub Repository
+                </a>
               </Button>
               <Button variant="glass" size="lg">
                 <Code2 /> Documentation
               </Button>
             </div>
             <p className="mt-6 font-mono text-[9px] uppercase tracking-widest text-muted-foreground">
-              v1.0.0 · Android 8+ · arm64 · 14.2 MB
+              {version} · Android 8+ · arm64 · {fileSize}
             </p>
           </div>
         </section>
       </main>
 
-      <footer className="border-t border-border px-5 py-8 lg:px-8">
-        <div className="mx-auto grid max-w-7xl grid-cols-[minmax(0,1fr)_auto] items-center gap-5">
-          <div className="min-w-0">
-            <a href="#top" className="flex items-center gap-2 font-mono text-xs font-semibold">
-              <Server className="h-4 w-4 shrink-0 text-primary" />
-              <span className="truncate">ANDROID SERVER MINI</span>
-            </a>
-            <p className="mt-2 text-[10px] text-muted-foreground">
-              © 2026 Android Server Mini. Built for builders.
-            </p>
+      <footer className="border-t border-border px-5 py-12 lg:px-8">
+        <div className="mx-auto max-w-7xl space-y-10">
+          <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-5">
+            <div className="min-w-0">
+              <a href="#top" className="flex items-center gap-2 font-mono text-xs font-semibold">
+                <span className="grid h-5 w-5 shrink-0 place-items-center overflow-hidden rounded-sm border border-primary/30">
+                  <img src="/logo-web.png" alt="" className="h-full w-full object-cover" />
+                </span>
+                <span className="truncate uppercase">ANDROID SERVER MINI</span>
+              </a>
+              <p className="mt-2 text-[10px] text-muted-foreground">
+                © 2026 Android Server Mini. Built for builders.
+              </p>
+            </div>
+            <div className="flex shrink-0 gap-2">
+              <Button asChild variant="ghost" size="icon" aria-label="GitHub">
+                <a href={repoUrl} target="_blank" rel="noopener noreferrer">
+                  <Github />
+                </a>
+              </Button>
+              <Button variant="ghost" size="icon" aria-label="Website">
+                <Globe2 />
+              </Button>
+            </div>
           </div>
-          <div className="flex shrink-0 gap-2">
-            <Button variant="ghost" size="icon" aria-label="GitHub">
-              <Github />
-            </Button>
-            <Button variant="ghost" size="icon" aria-label="Website">
-              <Globe2 />
-            </Button>
+          <div className="flex flex-col items-center justify-center gap-4 border-t border-border pt-10 text-center sm:flex-row sm:justify-between sm:text-left">
+            <div className="flex flex-col items-center gap-3 sm:flex-row">
+              <img src="/logo-powered.png" alt="Nhutcoder Team Logo" className="h-12 w-auto" />
+              <div>
+                <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
+                  Powered By
+                </p>
+                <p className="text-sm font-semibold">Nhutcoder Team</p>
+              </div>
+            </div>
+            <p className="max-w-xs text-[10px] leading-relaxed text-muted-foreground sm:text-right">
+              Empowering developers to build and deploy anywhere with specialized Android tooling
+              and runtime environments.
+            </p>
           </div>
         </div>
       </footer>
