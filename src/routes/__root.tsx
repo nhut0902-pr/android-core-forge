@@ -8,6 +8,7 @@ import {
   Scripts,
 } from "@tanstack/react-router";
 import { useEffect, type ReactNode } from "react";
+import { Toaster } from "@/components/ui/sonner";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
@@ -121,6 +122,33 @@ function RootShell({ children }: { children: ReactNode }) {
       </head>
       <body>
         {children}
+        <style>
+          {`
+            #page-agent-runtime_agent-panel {
+              display: none !important;
+            }
+          `}
+        </style>
+        <script
+          src="https://cdn.jsdelivr.net/npm/page-agent@latest/dist/iife/page-agent.demo.js"
+          crossOrigin="true"
+        ></script>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                var checkAgent = setInterval(function() {
+                  if (window.pageAgent || window.PageAgent) {
+                    window.__PAGE_AGENT_INSTANCE__ = window.pageAgent || (window.PageAgent && new window.PageAgent());
+                    console.log("NHUTCODER AI Instance Initialized", window.__PAGE_AGENT_INSTANCE__);
+                    clearInterval(checkAgent);
+                  }
+                }, 100);
+                setTimeout(function() { clearInterval(checkAgent); }, 10000);
+              })();
+            `,
+          }}
+        />
         <Scripts />
       </body>
     </html>
@@ -134,6 +162,7 @@ function RootComponent() {
     <QueryClientProvider client={queryClient}>
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
       <Outlet />
+      <Toaster richColors closeButton position="top-right" />
     </QueryClientProvider>
   );
 }
