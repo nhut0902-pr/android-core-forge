@@ -35,6 +35,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { HeroScene } from "@/components/hero-scene";
 import { useGithubRelease } from "@/hooks/use-github-release";
+import { BugReportDialog } from "@/components/bug-report-dialog";
+import { Bug } from "lucide-react";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -306,6 +308,15 @@ function Index() {
                 {item}
               </a>
             ))}
+            <BugReportDialog>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="text-xs text-muted-foreground hover:text-primary"
+              >
+                <Bug className="h-4 w-4" /> Báo Bug
+              </Button>
+            </BugReportDialog>
             <Button asChild variant="launch" size="sm">
               <a href="#download">
                 <ArrowDownToLine /> Download
@@ -743,6 +754,11 @@ function Index() {
               </p>
             </div>
             <div className="flex shrink-0 gap-2">
+              <BugReportDialog>
+                <Button variant="ghost" size="icon" aria-label="Report Bug">
+                  <Bug />
+                </Button>
+              </BugReportDialog>
               <Button asChild variant="ghost" size="icon" aria-label="GitHub">
                 <a href={repoUrl} target="_blank" rel="noopener noreferrer">
                   <Github />
