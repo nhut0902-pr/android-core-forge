@@ -37,7 +37,7 @@ import { HeroScene } from "@/components/hero-scene";
 import { useGithubRelease } from "@/hooks/use-github-release";
 import { BugReportDialog } from "@/components/bug-report-dialog";
 import { AIAssistant } from "@/components/ai-assistant";
-import { Bug } from "lucide-react";
+import { Bug, Sparkles } from "lucide-react";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -251,6 +251,17 @@ function Index() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [bugDialogOpen, setBugDialogOpen] = useState(false);
   const [screen, setScreen] = useState(0);
+
+  const toggleAI = () => {
+    const agent = window.__PAGE_AGENT_INSTANCE__;
+    if (agent && agent.panel) {
+      if (agent.panel.visible) {
+        agent.panel.hide();
+      } else {
+        agent.panel.show();
+      }
+    }
+  };
   const { data: release } = useGithubRelease();
 
   const repoUrl = "https://github.com/nhut0902-pr/SEVER-MINI-APP-BOT";
@@ -322,6 +333,14 @@ function Index() {
                 <span className="relative inline-flex h-3 w-3 rounded-full bg-white"></span>
               </span>
             </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={toggleAI}
+              className="h-9 rounded-full border-emerald-500/50 bg-emerald-500/10 px-5 text-[11px] font-black uppercase tracking-[0.15em] text-emerald-500 hover:bg-emerald-500 hover:text-white"
+            >
+              <Sparkles className="h-3.5 w-3.5 fill-current" /> Hỏi AI
+            </Button>
             <Button asChild variant="launch" size="sm">
               <a href="#download">
                 <ArrowDownToLine /> Download
@@ -350,7 +369,7 @@ function Index() {
                 {item}
               </a>
             ))}
-            <div className="pt-4">
+            <div className="space-y-3 pt-4">
               <Button
                 variant="destructive"
                 className="w-full justify-start gap-3 bg-red-500 text-white"
@@ -360,6 +379,16 @@ function Index() {
                 }}
               >
                 <Bug className="h-4 w-4" /> Report Bug
+              </Button>
+              <Button
+                variant="outline"
+                className="w-full justify-start gap-3 border-emerald-500 text-emerald-500 hover:bg-emerald-500 hover:text-white"
+                onClick={() => {
+                  setMenuOpen(false);
+                  toggleAI();
+                }}
+              >
+                <Sparkles className="h-4 w-4" /> Hỏi AI
               </Button>
             </div>
           </div>

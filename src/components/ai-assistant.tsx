@@ -21,15 +21,15 @@ export function AIAssistant() {
         setIsLoaded(true);
 
         // Hide default button
-        const defaultBtn = document.querySelector('.page-agent-trigger');
-        if (defaultBtn) (defaultBtn as HTMLElement).style.display = 'none';
+        const defaultBtn = document.querySelector(".page-agent-trigger");
+        if (defaultBtn) (defaultBtn as HTMLElement).style.display = "none";
 
         const timer = setInterval(() => {
           if (agent.panel && agent.panel.visible !== panelVisible) {
             setPanelVisible(agent.panel.visible);
           }
-          const db = document.querySelector('.page-agent-trigger');
-          if (db) (db as HTMLElement).style.display = 'none';
+          const db = document.querySelector(".page-agent-trigger");
+          if (db) (db as HTMLElement).style.display = "none";
         }, 500);
 
         return () => clearInterval(timer);
@@ -56,9 +56,13 @@ export function AIAssistant() {
 
   return (
     <>
-      <style dangerouslySetInnerHTML={{ __html: `
+      <style
+        dangerouslySetInnerHTML={{
+          __html: `
         .page-agent-trigger { display: none !important; }
-      `}} />
+      `,
+        }}
+      />
       <div className="fixed bottom-24 right-6 z-[60] sm:bottom-28 sm:right-8">
         <motion.button
           initial={{ scale: 0, rotate: -45 }}
@@ -80,7 +84,9 @@ export function AIAssistant() {
         {!panelVisible && (
           <div className="absolute -left-48 bottom-4 hidden w-44 rounded-xl border border-emerald-500/20 bg-background/80 p-3 shadow-xl backdrop-blur-md lg:block">
             <p className="text-[11px] font-medium leading-relaxed">
-              Chào bạn! Tôi là trợ lý ảo từ <span className="text-emerald-500 font-bold">NHUTCODER TEAM</span>. Tôi có thể giúp gì cho bạn?
+              Chào bạn! Tôi là trợ lý ảo từ{" "}
+              <span className="text-emerald-500 font-bold">NHUTCODER TEAM</span>. Tôi có thể giúp gì
+              cho bạn?
             </p>
             <div className="absolute -right-2 top-1/2 h-3 w-3 -translate-y-1/2 rotate-45 border-r border-t border-emerald-500/20 bg-background/80"></div>
           </div>
