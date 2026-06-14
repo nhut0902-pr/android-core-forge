@@ -122,6 +122,10 @@ function RootShell({ children }: { children: ReactNode }) {
       </head>
       <body>
         {children}
+        <script
+          src="https://cdn.jsdelivr.net/npm/page-agent@latest/dist/iife/page-agent.demo.js"
+          crossOrigin="true"
+        ></script>
         <Scripts />
       </body>
     </html>

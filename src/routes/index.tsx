@@ -36,6 +36,7 @@ import { Button } from "@/components/ui/button";
 import { HeroScene } from "@/components/hero-scene";
 import { useGithubRelease } from "@/hooks/use-github-release";
 import { BugReportDialog } from "@/components/bug-report-dialog";
+import { AIAssistant } from "@/components/ai-assistant";
 import { Bug } from "lucide-react";
 
 export const Route = createFileRoute("/")({
@@ -817,6 +818,7 @@ function Index() {
       </footer>
 
       <BugReportDialog open={bugDialogOpen} onOpenChange={setBugDialogOpen} />
+      <AIAssistant />
     </div>
   );
 }
