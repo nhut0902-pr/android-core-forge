@@ -1,4 +1,4 @@
-import { createServerFn } from "@tanstack/start";
+import { createServerFn } from "@tanstack/react-start";
 
 export const verifyAdminCredentials = createServerFn({ method: "POST" })
   .validator((data: any) => {

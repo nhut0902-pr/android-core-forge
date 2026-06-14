@@ -251,7 +251,7 @@ function Index() {
   const root = useRef<HTMLDivElement>(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const [bugDialogOpen, setBugDialogOpen] = useState(false);
-  const [aiDialogOpen, setAiDialogOpen] = useState(false);
+  const [aiDialogOpen, setAiDialogOpen] = useState(true);
   const [screen, setScreen] = useState(0);
   const { data: release } = useGithubRelease();
 
