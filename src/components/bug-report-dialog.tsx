@@ -7,6 +7,7 @@ import * as z from "zod";
 import { Bug, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/lib/supabase";
+import { sendBugReportEmail } from "@/lib/api/email";
 import {
   Dialog,
   DialogContent,
@@ -61,6 +62,17 @@ export function BugReportDialog({ children }: { children?: React.ReactNode }) {
       ]);
 
       if (error) throw error;
+
+      // Auto send email
+      if (values.email) {
+        sendBugReportEmail({
+          data: {
+            email: values.email,
+            title: values.title,
+            description: values.description,
+          },
+        }).catch((err) => console.error("Email send failed:", err));
+      }
 
       toast.success("Báo cáo bug đã được gửi thành công!");
       setOpen(false);
