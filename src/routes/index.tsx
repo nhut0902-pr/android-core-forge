@@ -312,9 +312,13 @@ function Index() {
               <Button
                 variant="destructive"
                 size="sm"
-                className="h-8 rounded-full bg-red-500/10 text-[10px] font-bold uppercase tracking-wider text-red-500 hover:bg-red-500 hover:text-white"
+                className="relative h-9 animate-pulse rounded-full border-2 border-red-500/50 bg-red-500 px-5 text-[11px] font-black uppercase tracking-[0.15em] text-white shadow-[0_0_20px_rgba(239,68,68,0.4)] hover:animate-none hover:bg-red-600 hover:shadow-[0_0_30px_rgba(239,68,68,0.6)]"
               >
-                <Bug className="h-3 w-3" /> Report Bug
+                <Bug className="h-3.5 w-3.5 fill-current" /> Report Bug
+                <span className="absolute -right-1 -top-1 flex h-3 w-3">
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-white opacity-75"></span>
+                  <span className="relative inline-flex h-3 w-3 rounded-full bg-white"></span>
+                </span>
               </Button>
             </BugReportDialog>
             <Button asChild variant="launch" size="sm">
@@ -741,10 +745,11 @@ function Index() {
 
       <BugReportDialog>
         <button
-          className="fixed bottom-6 right-6 z-[60] flex h-14 w-14 cursor-pointer items-center justify-center rounded-full bg-red-500 text-white shadow-lg transition-transform hover:scale-110 active:scale-95 sm:bottom-8 sm:right-8"
+          className="fixed bottom-6 right-6 z-[60] flex h-14 w-14 cursor-pointer items-center justify-center rounded-full bg-red-500 text-white shadow-[0_0_30px_rgba(239,68,68,0.5)] transition-all hover:scale-110 hover:bg-red-600 active:scale-95 sm:bottom-8 sm:right-8"
           aria-label="Báo lỗi nhanh"
         >
-          <Bug className="h-6 w-6" />
+          <div className="absolute inset-0 animate-ping rounded-full bg-red-500/40"></div>
+          <Bug className="relative h-7 w-7" />
         </button>
       </BugReportDialog>
 
@@ -764,7 +769,12 @@ function Index() {
             </div>
             <div className="flex shrink-0 gap-2">
               <BugReportDialog>
-                <Button variant="ghost" size="icon" aria-label="Report Bug">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  aria-label="Report Bug"
+                  className="text-red-500 hover:bg-red-500/10"
+                >
                   <Bug />
                 </Button>
               </BugReportDialog>
