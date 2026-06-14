@@ -8,6 +8,7 @@ import { toast } from "sonner";
 import { Bug, CheckCircle, Clock, LogOut, Mail, Trash2 } from "lucide-react";
 import { sendApprovalEmail } from "@/lib/api/email";
 import { Badge } from "@/components/ui/badge";
+import { verifyAdminCredentials } from "@/lib/api/admin";
 
 export const Route = createFileRoute("/admin-hidden-portal")({
   component: AdminPage,
@@ -40,15 +41,23 @@ function AdminPage() {
     }
   }, []);
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (username === "nhutcoderteam0902pr" && password === "090211") {
-      setIsLoggedIn(true);
-      localStorage.setItem("admin_session", "true");
-      toast.success("Đăng nhập thành công");
-      fetchBugs();
-    } else {
-      toast.error("Sai tài khoản hoặc mật khẩu");
+    try {
+      const result = await verifyAdminCredentials({
+        data: { username, password },
+      });
+
+      if (result.success) {
+        setIsLoggedIn(true);
+        localStorage.setItem("admin_session", "true");
+        toast.success("Đăng nhập thành công");
+        fetchBugs();
+      } else {
+        toast.error("Sai tài khoản hoặc mật khẩu");
+      }
+    } catch (error) {
+      toast.error("Lỗi hệ thống khi đăng nhập");
     }
   };
 

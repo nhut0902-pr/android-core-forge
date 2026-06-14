@@ -122,6 +122,13 @@ function RootShell({ children }: { children: ReactNode }) {
       </head>
       <body>
         {children}
+        <style>
+          {`
+            #page-agent-runtime_agent-panel {
+              display: none !important;
+            }
+          `}
+        </style>
         <script
           src="https://cdn.jsdelivr.net/npm/page-agent@latest/dist/iife/page-agent.demo.js"
           crossOrigin="true"

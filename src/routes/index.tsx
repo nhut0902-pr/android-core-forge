@@ -37,6 +37,7 @@ import { HeroScene } from "@/components/hero-scene";
 import { useGithubRelease } from "@/hooks/use-github-release";
 import { BugReportDialog } from "@/components/bug-report-dialog";
 import { AIAssistant } from "@/components/ai-assistant";
+import { AIDialog } from "@/components/ai-dialog";
 import { Bug, Sparkles } from "lucide-react";
 
 export const Route = createFileRoute("/")({
@@ -250,18 +251,8 @@ function Index() {
   const root = useRef<HTMLDivElement>(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const [bugDialogOpen, setBugDialogOpen] = useState(false);
+  const [aiDialogOpen, setAiDialogOpen] = useState(false);
   const [screen, setScreen] = useState(0);
-
-  const toggleAI = () => {
-    const agent = window.__PAGE_AGENT_INSTANCE__;
-    if (agent && agent.panel) {
-      if (agent.panel.visible) {
-        agent.panel.hide();
-      } else {
-        agent.panel.show();
-      }
-    }
-  };
   const { data: release } = useGithubRelease();
 
   const repoUrl = "https://github.com/nhut0902-pr/SEVER-MINI-APP-BOT";
@@ -336,7 +327,7 @@ function Index() {
             <Button
               variant="outline"
               size="sm"
-              onClick={toggleAI}
+              onClick={() => setAiDialogOpen(true)}
               className="h-9 rounded-full border-emerald-500/50 bg-emerald-500/10 px-5 text-[11px] font-black uppercase tracking-[0.15em] text-emerald-500 hover:bg-emerald-500 hover:text-white"
             >
               <Sparkles className="h-3.5 w-3.5 fill-current" /> Hỏi AI
@@ -385,7 +376,7 @@ function Index() {
                 className="w-full justify-start gap-3 border-emerald-500 text-emerald-500 hover:bg-emerald-500 hover:text-white"
                 onClick={() => {
                   setMenuOpen(false);
-                  toggleAI();
+                  setAiDialogOpen(true);
                 }}
               >
                 <Sparkles className="h-4 w-4" /> Hỏi AI
@@ -847,7 +838,8 @@ function Index() {
       </footer>
 
       <BugReportDialog open={bugDialogOpen} onOpenChange={setBugDialogOpen} />
-      <AIAssistant />
+      <AIDialog open={aiDialogOpen} onOpenChange={setAiDialogOpen} />
+      <AIAssistant open={aiDialogOpen} onOpenChange={setAiDialogOpen} />
     </div>
   );
 }
