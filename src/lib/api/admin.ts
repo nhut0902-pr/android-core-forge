@@ -8,8 +8,13 @@ export const verifyAdminCredentials = createServerFn({ method: "POST" })
     return data;
   })
   .handler(async ({ data }) => {
-    const adminUser = process.env.ADMIN_USERNAME || "nhutcoderteam0902pr";
-    const adminPass = process.env.ADMIN_PASSWORD || "090211";
+    const adminUser = process.env.ADMIN_USERNAME;
+    const adminPass = process.env.ADMIN_PASSWORD;
+
+    if (!adminUser || !adminPass) {
+      console.error("ADMIN_USERNAME or ADMIN_PASSWORD not set in environment");
+      return { success: false };
+    }
 
     if (data.username === adminUser && data.password === adminPass) {
       return { success: true };

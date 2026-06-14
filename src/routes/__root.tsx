@@ -133,6 +133,22 @@ function RootShell({ children }: { children: ReactNode }) {
           src="https://cdn.jsdelivr.net/npm/page-agent@latest/dist/iife/page-agent.demo.js"
           crossOrigin="true"
         ></script>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                var checkAgent = setInterval(function() {
+                  if (window.pageAgent || window.PageAgent) {
+                    window.__PAGE_AGENT_INSTANCE__ = window.pageAgent || (window.PageAgent && new window.PageAgent());
+                    console.log("NHUTCODER AI Instance Initialized", window.__PAGE_AGENT_INSTANCE__);
+                    clearInterval(checkAgent);
+                  }
+                }, 100);
+                setTimeout(function() { clearInterval(checkAgent); }, 10000);
+              })();
+            `,
+          }}
+        />
         <Scripts />
       </body>
     </html>

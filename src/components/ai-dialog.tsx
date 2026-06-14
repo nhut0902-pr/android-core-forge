@@ -49,7 +49,7 @@ export function AIDialog({ open, onOpenChange }: AIDialogProps) {
     setIsLoading(true);
 
     try {
-      const agent = (window as any).__PAGE_AGENT_INSTANCE__;
+      const agent = window.__PAGE_AGENT_INSTANCE__;
       if (agent && agent.execute) {
         // We use the agent to process the instruction
         // Since it's a demo script, we simulate the conversation flow
@@ -61,6 +61,7 @@ export function AIDialog({ open, onOpenChange }: AIDialogProps) {
           {
             role: "assistant",
             content:
+              response?.data ||
               response?.message ||
               "Tôi đã thực hiện yêu cầu của bạn. Bạn có cần hỗ trợ gì thêm không?",
           },

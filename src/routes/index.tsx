@@ -293,7 +293,7 @@ function Index() {
           <a href="#top" className="flex min-w-0 items-center gap-2.5">
             <span className="grid h-8 w-8 shrink-0 place-items-center overflow-hidden rounded-lg border border-primary/30 bg-primary/10">
               <img
-                src="/logo-powered.png"
+                src="/logo-web.png"
                 alt="Android Server Mini Logo"
                 className="h-full w-full object-cover"
               />
@@ -396,7 +396,7 @@ function Index() {
             <div className="relative h-full w-full">
               <HeroScene />
               <div className="pointer-events-none absolute left-1/2 top-1/2 h-[60%] w-[60%] -translate-x-1/2 -translate-y-1/2 opacity-20 blur-sm grayscale brightness-200 contrast-150">
-                <img src="/logo-powered.png" alt="" className="h-full w-full object-contain" />
+                <img src="/logo-web.png" alt="" className="h-full w-full object-contain" />
               </div>
             </div>
           </div>
@@ -791,7 +791,7 @@ function Index() {
             <div className="min-w-0">
               <a href="#top" className="flex items-center gap-2 font-mono text-xs font-semibold">
                 <span className="grid h-5 w-5 shrink-0 place-items-center overflow-hidden rounded-sm border border-primary/30">
-                  <img src="/logo-powered.png" alt="" className="h-full w-full object-cover" />
+                  <img src="/logo-web.png" alt="" className="h-full w-full object-cover" />
                 </span>
                 <span className="truncate uppercase">ANDROID SERVER MINI</span>
               </a>
@@ -821,7 +821,7 @@ function Index() {
           </div>
           <div className="flex flex-col items-center justify-center gap-4 border-t border-border pt-10 text-center sm:flex-row sm:justify-between sm:text-left">
             <div className="flex flex-col items-center gap-3 sm:flex-row">
-              <img src="/logo-web.png" alt="Nhutcoder Team Logo" className="h-12 w-auto" />
+              <img src="/logo-powered.png" alt="Nhutcoder Team Logo" className="h-12 w-auto" />
               <div>
                 <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
                   Powered By

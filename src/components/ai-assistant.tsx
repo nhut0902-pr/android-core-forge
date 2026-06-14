@@ -4,8 +4,13 @@ import { motion } from "motion/react";
 
 declare global {
   interface Window {
-    PageAgent: any;
-    __PAGE_AGENT_INSTANCE__: any;
+    PageAgent: unknown;
+    __PAGE_AGENT_INSTANCE__: {
+      execute: (input: string) => Promise<{ data?: string; message?: string }>;
+      panel?: {
+        hide: () => void;
+      };
+    } | null;
   }
 }
 
