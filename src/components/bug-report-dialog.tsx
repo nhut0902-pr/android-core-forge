@@ -52,26 +52,38 @@ export function BugReportDialog({ children }: { children?: React.ReactNode }) {
 
   async function onSubmit(values: FormValues) {
     setIsSubmitting(true);
+    console.log("Submitting bug report:", values);
     try {
-      const { error } = await supabase.from("bugs").insert([
+      const { data, error } = await supabase.from("bugs").insert([
         {
           title: values.title,
           description: values.description,
           email: values.email || null,
+          status: "pending",
         },
       ]);
 
-      if (error) throw error;
+      if (error) {
+        console.error("Supabase insert error:", error);
+        throw error;
+      }
+      console.log("Supabase response:", data);
 
       // Auto send email
       if (values.email) {
-        sendBugReportEmail({
-          data: {
-            email: values.email,
-            title: values.title,
-            description: values.description,
-          },
-        }).catch((err) => console.error("Email send failed:", err));
+        console.log("Attempting to send auto-reply email to:", values.email);
+        try {
+          const emailResult = await sendBugReportEmail({
+            data: {
+              email: values.email,
+              title: values.title,
+              description: values.description,
+            },
+          });
+          console.log("Email result:", emailResult);
+        } catch (err) {
+          console.error("Email send function failed:", err);
+        }
       }
 
       toast.success("Báo cáo bug đã được gửi thành công!");
@@ -95,31 +107,31 @@ export function BugReportDialog({ children }: { children?: React.ReactNode }) {
           </Button>
         )}
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px] bg-background/95 backdrop-blur-xl border-primary/20">
-        <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
-            <Bug className="h-5 w-5 text-primary" /> Báo cáo lỗi
+      <DialogContent className="sm:max-w-[380px] bg-background/95 backdrop-blur-2xl border-primary/20 p-4 shadow-2xl">
+        <DialogHeader className="space-y-1">
+          <DialogTitle className="flex items-center gap-2 text-lg">
+            <Bug className="h-5 w-5 text-red-500" /> Báo cáo lỗi
           </DialogTitle>
-          <DialogDescription>
-            Giúp chúng tôi cải thiện ứng dụng bằng cách mô tả lỗi bạn gặp phải.
+          <DialogDescription className="text-xs">
+            Mô tả ngắn gọn lỗi bạn gặp phải.
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 py-4">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3 pt-2">
             <FormField
               control={form.control}
               name="title"
               render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Tiêu đề</FormLabel>
+                <FormItem className="space-y-1">
+                  <FormLabel className="text-xs">Tiêu đề</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="Ví dụ: Lỗi không thể tải file APK"
+                      placeholder="Lỗi..."
                       {...field}
-                      className="bg-secondary/50 border-primary/10"
+                      className="h-9 bg-secondary/30 border-primary/10 text-sm"
                     />
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage className="text-[10px]" />
                 </FormItem>
               )}
             />
@@ -127,16 +139,16 @@ export function BugReportDialog({ children }: { children?: React.ReactNode }) {
               control={form.control}
               name="description"
               render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Mô tả chi tiết</FormLabel>
+                <FormItem className="space-y-1">
+                  <FormLabel className="text-xs">Mô tả chi tiết</FormLabel>
                   <FormControl>
                     <Textarea
-                      placeholder="Mô tả các bước tái hiện lỗi..."
+                      placeholder="Các bước tái hiện..."
                       {...field}
-                      className="bg-secondary/50 border-primary/10 min-h-[100px]"
+                      className="bg-secondary/30 border-primary/10 min-h-[80px] text-sm resize-none"
                     />
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage className="text-[10px]" />
                 </FormItem>
               )}
             />
@@ -144,25 +156,25 @@ export function BugReportDialog({ children }: { children?: React.ReactNode }) {
               control={form.control}
               name="email"
               render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Email liên hệ (tùy chọn)</FormLabel>
+                <FormItem className="space-y-1">
+                  <FormLabel className="text-xs">Email (tùy chọn)</FormLabel>
                   <FormControl>
                     <Input
                       placeholder="email@example.com"
                       {...field}
-                      className="bg-secondary/50 border-primary/10"
+                      className="h-9 bg-secondary/30 border-primary/10 text-sm"
                     />
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage className="text-[10px]" />
                 </FormItem>
               )}
             />
-            <DialogFooter className="pt-4">
+            <DialogFooter className="pt-2">
               <Button
                 type="submit"
                 disabled={isSubmitting}
                 variant="launch"
-                className="w-full sm:w-auto"
+                className="w-full h-10 text-sm"
               >
                 {isSubmitting ? (
                   <>

@@ -298,7 +298,7 @@ function Index() {
               ANDROID SERVER <i className="not-italic text-primary">MINI</i>
             </span>
           </a>
-          <div className="hidden items-center gap-8 md:flex">
+          <div className="hidden items-center gap-6 md:flex">
             {["Features", "Terminal", "Architecture", "Performance"].map((item) => (
               <a
                 key={item}
@@ -310,11 +310,11 @@ function Index() {
             ))}
             <BugReportDialog>
               <Button
-                variant="ghost"
+                variant="destructive"
                 size="sm"
-                className="text-xs text-muted-foreground hover:text-primary"
+                className="h-8 rounded-full bg-red-500/10 text-[10px] font-bold uppercase tracking-wider text-red-500 hover:bg-red-500 hover:text-white"
               >
-                <Bug className="h-4 w-4" /> Báo Bug
+                <Bug className="h-3 w-3" /> Report Bug
               </Button>
             </BugReportDialog>
             <Button asChild variant="launch" size="sm">
@@ -738,6 +738,15 @@ function Index() {
           </div>
         </section>
       </main>
+
+      <BugReportDialog>
+        <button
+          className="fixed bottom-6 right-6 z-[60] flex h-14 w-14 cursor-pointer items-center justify-center rounded-full bg-red-500 text-white shadow-lg transition-transform hover:scale-110 active:scale-95 sm:bottom-8 sm:right-8"
+          aria-label="Báo lỗi nhanh"
+        >
+          <Bug className="h-6 w-6" />
+        </button>
+      </BugReportDialog>
 
       <footer className="border-t border-border px-5 py-12 lg:px-8">
         <div className="mx-auto max-w-7xl space-y-10">
