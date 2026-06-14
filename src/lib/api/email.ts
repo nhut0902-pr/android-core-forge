@@ -1,6 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import nodemailer from "nodemailer";
 import { z } from "zod";
+import { TEAM_LOGO_BASE64 } from "./logo-base64";
 
 const transporter = nodemailer.createTransport({
   service: "gmail",
@@ -9,8 +10,6 @@ const transporter = nodemailer.createTransport({
     pass: process.env.EMAIL_PASS,
   },
 });
-
-const LOGO_URL = "https://sever-mini-app-bot.vercel.app/logo-powered.png"; // Assuming public URL
 
 export const sendBugReportEmail = createServerFn({ method: "POST" })
   .inputValidator(
@@ -28,7 +27,7 @@ export const sendBugReportEmail = createServerFn({ method: "POST" })
       html: `
         <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden;">
           <div style="background-color: #020617; padding: 20px; text-align: center;">
-            <img src="${LOGO_URL}" alt="Nhutcoder Team" style="height: 50px;">
+            <img src="cid:teamlogo" alt="Nhutcoder Team" style="height: 50px;">
           </div>
           <div style="padding: 20px; color: #1e293b;">
             <h2 style="color: #10b981;">Chào bạn,</h2>
@@ -49,7 +48,17 @@ export const sendBugReportEmail = createServerFn({ method: "POST" })
     };
 
     try {
-      await transporter.sendMail(mailOptions);
+      await transporter.sendMail({
+        ...mailOptions,
+        attachments: [
+          {
+            filename: "logo-web.png",
+            content: TEAM_LOGO_BASE64,
+            encoding: "base64",
+            cid: "teamlogo",
+          },
+        ],
+      });
       return { success: true };
     } catch (error) {
       console.error("Error sending email:", error);
@@ -72,7 +81,7 @@ export const sendApprovalEmail = createServerFn({ method: "POST" })
       html: `
         <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden;">
           <div style="background-color: #020617; padding: 20px; text-align: center;">
-            <img src="${LOGO_URL}" alt="Nhutcoder Team" style="height: 50px;">
+            <img src="cid:teamlogo" alt="Nhutcoder Team" style="height: 50px;">
           </div>
           <div style="padding: 20px; color: #1e293b;">
             <h2 style="color: #10b981;">Tuyệt vời!</h2>
@@ -89,7 +98,17 @@ export const sendApprovalEmail = createServerFn({ method: "POST" })
     };
 
     try {
-      await transporter.sendMail(mailOptions);
+      await transporter.sendMail({
+        ...mailOptions,
+        attachments: [
+          {
+            filename: "logo-web.png",
+            content: TEAM_LOGO_BASE64,
+            encoding: "base64",
+            cid: "teamlogo",
+          },
+        ],
+      });
       return { success: true };
     } catch (error) {
       console.error("Error sending approval email:", error);
