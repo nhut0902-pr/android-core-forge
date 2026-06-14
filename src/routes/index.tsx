@@ -248,6 +248,7 @@ function PhoneMockup({ screen }: { screen: number }) {
 function Index() {
   const root = useRef<HTMLDivElement>(null);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [bugDialogOpen, setBugDialogOpen] = useState(false);
   const [screen, setScreen] = useState(0);
   const { data: release } = useGithubRelease();
 
@@ -308,19 +309,18 @@ function Index() {
                 {item}
               </a>
             ))}
-            <BugReportDialog>
-              <Button
-                variant="destructive"
-                size="sm"
-                className="relative h-9 animate-pulse rounded-full border-2 border-red-500/50 bg-red-500 px-5 text-[11px] font-black uppercase tracking-[0.15em] text-white shadow-[0_0_20px_rgba(239,68,68,0.4)] hover:animate-none hover:bg-red-600 hover:shadow-[0_0_30px_rgba(239,68,68,0.6)]"
-              >
-                <Bug className="h-3.5 w-3.5 fill-current" /> Report Bug
-                <span className="absolute -right-1 -top-1 flex h-3 w-3">
-                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-white opacity-75"></span>
-                  <span className="relative inline-flex h-3 w-3 rounded-full bg-white"></span>
-                </span>
-              </Button>
-            </BugReportDialog>
+            <Button
+              variant="destructive"
+              size="sm"
+              onClick={() => setBugDialogOpen(true)}
+              className="relative h-9 animate-pulse rounded-full border-2 border-red-500/50 bg-red-500 px-5 text-[11px] font-black uppercase tracking-[0.15em] text-white shadow-[0_0_20px_rgba(239,68,68,0.4)] hover:animate-none hover:bg-red-600 hover:shadow-[0_0_30px_rgba(239,68,68,0.6)]"
+            >
+              <Bug className="h-3.5 w-3.5 fill-current" /> Report Bug
+              <span className="absolute -right-1 -top-1 flex h-3 w-3">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-white opacity-75"></span>
+                <span className="relative inline-flex h-3 w-3 rounded-full bg-white"></span>
+              </span>
+            </Button>
             <Button asChild variant="launch" size="sm">
               <a href="#download">
                 <ArrowDownToLine /> Download
@@ -349,6 +349,18 @@ function Index() {
                 {item}
               </a>
             ))}
+            <div className="pt-4">
+              <Button
+                variant="destructive"
+                className="w-full justify-start gap-3 bg-red-500 text-white"
+                onClick={() => {
+                  setMenuOpen(false);
+                  setBugDialogOpen(true);
+                }}
+              >
+                <Bug className="h-4 w-4" /> Report Bug
+              </Button>
+            </div>
           </div>
         )}
       </header>
@@ -743,15 +755,14 @@ function Index() {
         </section>
       </main>
 
-      <BugReportDialog>
-        <button
-          className="fixed bottom-6 right-6 z-[60] flex h-14 w-14 cursor-pointer items-center justify-center rounded-full bg-red-500 text-white shadow-[0_0_30px_rgba(239,68,68,0.5)] transition-all hover:scale-110 hover:bg-red-600 active:scale-95 sm:bottom-8 sm:right-8"
-          aria-label="Báo lỗi nhanh"
-        >
-          <div className="absolute inset-0 animate-ping rounded-full bg-red-500/40"></div>
-          <Bug className="relative h-7 w-7" />
-        </button>
-      </BugReportDialog>
+      <button
+        onClick={() => setBugDialogOpen(true)}
+        className="fixed bottom-6 right-6 z-[60] flex h-14 w-14 cursor-pointer items-center justify-center rounded-full bg-red-500 text-white shadow-[0_0_30px_rgba(239,68,68,0.5)] transition-all hover:scale-110 hover:bg-red-600 active:scale-95 sm:bottom-8 sm:right-8"
+        aria-label="Báo lỗi nhanh"
+      >
+        <div className="absolute inset-0 animate-ping rounded-full bg-red-500/40"></div>
+        <Bug className="relative h-7 w-7" />
+      </button>
 
       <footer className="border-t border-border px-5 py-12 lg:px-8">
         <div className="mx-auto max-w-7xl space-y-10">
@@ -768,16 +779,15 @@ function Index() {
               </p>
             </div>
             <div className="flex shrink-0 gap-2">
-              <BugReportDialog>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  aria-label="Report Bug"
-                  className="text-red-500 hover:bg-red-500/10"
-                >
-                  <Bug />
-                </Button>
-              </BugReportDialog>
+              <Button
+                variant="ghost"
+                size="icon"
+                aria-label="Report Bug"
+                onClick={() => setBugDialogOpen(true)}
+                className="text-red-500 hover:bg-red-500/10"
+              >
+                <Bug />
+              </Button>
               <Button asChild variant="ghost" size="icon" aria-label="GitHub">
                 <a href={repoUrl} target="_blank" rel="noopener noreferrer">
                   <Github />
@@ -805,6 +815,8 @@ function Index() {
           </div>
         </div>
       </footer>
+
+      <BugReportDialog open={bugDialogOpen} onOpenChange={setBugDialogOpen} />
     </div>
   );
 }

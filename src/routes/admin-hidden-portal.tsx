@@ -66,10 +66,17 @@ function AdminPage() {
         .select("*")
         .order("created_at", { ascending: false });
 
-      if (error) throw error;
+      if (error) {
+        if (error.code === "42P01") {
+          toast.error("Lỗi: Bảng 'bugs' chưa được tạo trong Supabase. Vui lòng chạy script SQL.");
+          setBugs([]);
+          return;
+        }
+        throw error;
+      }
       setBugs(data || []);
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : "Lỗi không xác định";
+      const errorMessage = error instanceof Error ? error.message : "Không xác định";
       toast.error("Lỗi khi tải danh sách bug: " + errorMessage);
     } finally {
       setIsLoading(false);

@@ -1,5 +1,6 @@
 import { createServerFn } from "@tanstack/react-start";
 import nodemailer from "nodemailer";
+import { z } from "zod";
 
 const transporter = nodemailer.createTransport({
   service: "gmail",
@@ -12,10 +13,14 @@ const transporter = nodemailer.createTransport({
 const LOGO_URL = "https://sever-mini-app-bot.vercel.app/logo-powered.png"; // Assuming public URL
 
 export const sendBugReportEmail = createServerFn({ method: "POST" })
-  .inputValidator((d: { email: string; title: string; description: string }) => d)
+  .inputValidator(
+    z.object({
+      email: z.string().email(),
+      title: z.string(),
+      description: z.string(),
+    }),
+  )
   .handler(async ({ data }) => {
-    if (!data.email) return { success: true, message: "No email provided" };
-
     const mailOptions = {
       from: `"Android Server Mini" <${process.env.EMAIL_USER}>`,
       to: data.email,
@@ -53,10 +58,13 @@ export const sendBugReportEmail = createServerFn({ method: "POST" })
   });
 
 export const sendApprovalEmail = createServerFn({ method: "POST" })
-  .inputValidator((d: { email: string; title: string }) => d)
+  .inputValidator(
+    z.object({
+      email: z.string().email(),
+      title: z.string(),
+    }),
+  )
   .handler(async ({ data }) => {
-    if (!data.email) return { success: true, message: "No email provided" };
-
     const mailOptions = {
       from: `"Android Server Mini" <${process.env.EMAIL_USER}>`,
       to: data.email,
